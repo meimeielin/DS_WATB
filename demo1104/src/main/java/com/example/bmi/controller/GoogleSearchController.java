@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.bmi.service.BmiService;
 
 @Controller
-public class BmiController {
+public class GoogleSearchController {
 
     @Autowired
     private BmiService bmiService;
