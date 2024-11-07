@@ -14,7 +14,7 @@ import com.example.bmi.service.BmiService;
 public class GoogleSearchController {
 
     @Autowired
-    private BmiService bmiService;
+    private GoogleSearchController bmiService;
 
     @GetMapping("/")
     public String index() {
