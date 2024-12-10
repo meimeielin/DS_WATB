@@ -29,24 +29,25 @@
     <ul id="results"></ul>
 
     <script>
+        // 定義搜尋函數
         function search() {
-            const query = document.getElementById("query").value;  // 获取用户输入的查询词
+            const query = document.getElementById("query").value.trim(); // 獲取用戶輸入
             if (!query) {
                 alert("Please enter a search term.");
                 return;
             }
 
-            // 使用 encodeURIComponent 确保输入值在 URL 中正确编码
+            // 模擬 API 呼叫，展示處理邏輯
             fetch(`/api/google/search?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     const resultsList = document.getElementById("results");
-                    resultsList.innerHTML = "";  // 清空旧的搜索结果
+                    resultsList.innerHTML = ""; // 清空舊的搜尋結果
 
                     if (data.error) {
                         alert(data.error);
                     } else {
-                        // 处理后端返回的 JSON 数据并展示到页面上
+                        // 將後端返回的結果顯示在畫面上
                         Object.entries(data).forEach(([title, url]) => {
                             const li = document.createElement("li");
                             li.innerHTML = `<a href="${url}" target="_blank">${title}</a>`;
@@ -59,6 +60,18 @@
                     alert("An error occurred while fetching results.");
                 });
         }
+
+        // 監聽 Enter 鍵事件
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("query");
+            input.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // 防止表單的預設提交行為
+                    search();
+                }
+            });
+        });
     </script>
 </body>
 </html>
+
