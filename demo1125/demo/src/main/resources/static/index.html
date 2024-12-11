@@ -8,6 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background: #fecda5;
         }
         input, button {
             padding: 10px;
@@ -28,7 +29,7 @@
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
         <img src="title.png" alt="Google Search Scraper" style="width: 500px; height: auto;">
         <div style="display: flex; align-items: center;">
-            <input type="text" id="query" placeholder="Enter search term">
+            <input type="text" id="query" placeholder="Enter search term" style="border:none; border-radius: 20px">
             <img src="search_button.png" alt="Search" onclick="search()" style="cursor: pointer; width: 30px; height: 30px; margin-left: 10px;">
         </div>
         <ul id="results"></ul>
