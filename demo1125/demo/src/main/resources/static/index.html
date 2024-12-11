@@ -38,7 +38,6 @@
             <input type="text" id="query" placeholder="Enter search term" style="border:none; border-radius: 20px">
             <img src="search_button.png" alt="Search" onclick="search()" style="cursor: pointer; width: 30px; height: 30px; margin-left: 10px;">
         </div>
-        <ul id="results"></ul>
         <div>
             <input type="checkbox" class="btn-check" id="sweet" autocomplete="off">
             <label class="btn btn-outline-secondary" for="sweet" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">甜</label>
@@ -59,6 +58,7 @@
             <label class="btn btn-outline-secondary" for="recommand" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">課程推薦</label>
         </div>
     </div>
+    <ul id="results"></ul>
     </div>
     <script>
         // 定義搜尋函數
@@ -69,19 +69,8 @@
                 return;
             }
 
-            // 獲取所有選中的 checkbox 並將其標籤加入查詢字串
-            const selectedLabels = [];
-            document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
-                const label = document.querySelector(`label[for='${checkbox.id}']`).innerText;
-                selectedLabels.push(label);
-            });
-
-            // 將選中的標籤加入查詢字串
-            
-
-
             // 模擬 API 呼叫，展示處理邏輯
-            fetch(`/api/google/search?query=${encodeURIComponent(query + selectedLabels)}`)
+            fetch(`/api/google/search?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     const resultsList = document.getElementById("results");
