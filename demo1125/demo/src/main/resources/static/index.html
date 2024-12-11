@@ -14,6 +14,7 @@
             margin: 5px 0;
             width: 300px;
         }
+        
         ul {
             list-style-type: none;
         }
@@ -26,8 +27,10 @@
     <div class="yscroll-auto">
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
         <h1>Google Search Scraper</h1>
-        <input type="text" id="query" placeholder="Enter search term">
-        <button onclick="search()">Search</button>
+        <div style="display: flex; align-items: center;">
+            <input type="text" id="query" placeholder="Enter search term">
+            <img src="search_button.png" alt="Search" onclick="search()" style="cursor: pointer; width: 30px; height: 30px; margin-left: 10px;">
+        </div>
         <ul id="results"></ul>
     </div>
     </div>
