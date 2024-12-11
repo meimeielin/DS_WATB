@@ -63,11 +63,19 @@
     <script>
         // 定義搜尋函數
         function search() {
-            const query = document.getElementById("query").value.trim(); // 獲取用戶輸入
+            var query = document.getElementById("query").value.trim(); // 獲取用戶輸入
             if (!query) {
                 alert("Please enter a search term.");
                 return;
             }
+
+            // 獲取 checkbox 的值
+            const sweet = document.getElementById("sweet").checked;
+            const cool = document.getElementById("cool").checked;
+            const water = document.getElementById("water").checked;
+            const evaluate = document.getElementById("evaluate").checked;
+            const reflection = document.getElementById("reflection").checked;
+            const recommand = document.getElementById("recommand").checked;
 
             // 模擬 API 呼叫，展示處理邏輯
             fetch(`/api/google/search?query=${encodeURIComponent(query)}`)
