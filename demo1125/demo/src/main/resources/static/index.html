@@ -23,11 +23,14 @@
     </style>
 </head>
 <body>
-    <h1>Google Search Scraper</h1>
-    <input type="text" id="query" placeholder="Enter search term">
-    <button onclick="search()">Search</button>
-    <ul id="results"></ul>
-
+    <div class="yscroll-auto">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        <h1>Google Search Scraper</h1>
+        <input type="text" id="query" placeholder="Enter search term">
+        <button onclick="search()">Search</button>
+        <ul id="results"></ul>
+    </div>
+    </div>
     <script>
         // 定義搜尋函數
         function search() {
