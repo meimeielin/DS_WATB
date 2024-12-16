@@ -24,15 +24,15 @@ public class GoogleScraperController {
     private GoogleScraperService googleScraperService;
 
     /**
-     * 搜索 Google 并返回标题和链接的 Map
+     * 搜索 Google 並返回標題和連結的 Map
      *
-     * @param query 查询关键词
-     * @return 标题到链接的映射
+     * @param query 查詢關鍵字
+     * @return 標題到連結的映射
      */
     @GetMapping("/search")
     public Map<String, String> searchGoogle(@RequestParam String query) {
         try {
-            // 对查询关键词进行 URL 编码
+            // 對查詢關鍵字 URL 編碼
             String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8.toString());
 
             // 调用 service 层的 scrape 方法
