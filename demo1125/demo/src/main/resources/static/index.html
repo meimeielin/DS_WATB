@@ -12,8 +12,9 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background: #fecda5;
-        }
+            background-image: url("picture/background.png");
+            background-size:cover;
+            background-position: center;
         input, button {
             padding: 10px;
             margin: 5px 0;
@@ -35,7 +36,7 @@
 <body>
     <div class="yscroll-auto"></div>
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-        <img src="title.png" alt="Google Search Scraper" style="width: 500px; height: auto; cursor: pointer;" onclick="clearResults()">
+        <img src="picture/title.png" alt="Google Search Scraper" style="width: 600px; height: auto; cursor: pointer;" onclick="clearResults()">
 
         <div style="display: flex; align-items: center;">
             <input type="text" id="query" placeholder="Enter search term" style="border:none; border-radius: 20px">
@@ -48,22 +49,22 @@
 
     <div style="display: flex; justify-content: center; margin-top: 20px;">
         <input type="checkbox" class="btn-check" id="sweet" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="sweet" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">甜</label>
+        <label class="btn btn-outline-secondary" for="sweet" style="margin: 0 .1px; color:aqua; border-color: darksalmon;">地震</label>
        
         <input type="checkbox" class="btn-check" id="cool" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="cool" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">涼</label>
+        <label class="btn btn-outline-secondary" for="cool" style="margin: 0 .1px; color: aqua; border-color: darksalmon;">颱風</label>
        
         <input type="checkbox" class="btn-check" id="water" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="water" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">水</label>
+        <label class="btn btn-outline-secondary" for="water" style="margin: 0 .1px; color: aqua; border-color: darksalmon;">水</label>
        
         <input type="checkbox" class="btn-check" id="evaluate" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="evaluate" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">政大課程評價</label>
+        <label class="btn btn-outline-secondary" for="evaluate" style="margin: 0 .1px; color: aqua; border-color: darksalmon;">政大課程評價</label>
        
         <input type="checkbox" class="btn-check" id="reflection" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="reflection" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">心得</label>
+        <label class="btn btn-outline-secondary" for="reflection" style="margin: 0 .1px; color: aqua; border-color: darksalmon;">心得</label>
        
         <input type="checkbox" class="btn-check" id="recommand" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="recommand" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">課程推薦</label>
+        <label class="btn btn-outline-secondary" for="recommand" style="margin: 0 .1px; color: aqua; border-color: darksalmon;">課程推薦</label>
     </div>
     </div>
     
