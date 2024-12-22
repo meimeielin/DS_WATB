@@ -78,15 +78,14 @@
             }
 
             // 獲取 checkbox 的值
-            const earthquake = document.getElementById("earthquake").checked;
-            const typhoon = document.getElementById("typhoon").checked;
-            const flood = document.getElementById("flood").checked;
-            const forecast = document.getElementById("forecast").checked;
-            const Taiwan = document.getElementById("Taiwan").checked;
-            const Japan = document.getElementById("Japan").checked;
+            const selectedCheckboxes = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
+                .map(checkbox => checkbox.id);
+
+            const defaultKeywords = selectedCheckboxes.join(" ");
+            const finalQuery = query + " " + defaultKeywords;
 
             // 模擬 API 呼叫，展示處理邏輯
-            fetch(`/api/google/search?query=${encodeURIComponent(query)}`)
+            fetch(`/api/google/search?query=${encodeURIComponent(finalQuery)}`)
                 .then(response => response.json())
                 .then(data => {
                     const resultsList = document.getElementById("results");

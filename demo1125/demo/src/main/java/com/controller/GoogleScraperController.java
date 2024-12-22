@@ -33,7 +33,8 @@ public class GoogleScraperController {
     public Map<String, String> searchGoogle(@RequestParam String query) {
         try {
             // 對查詢關鍵字 URL 編碼
-            String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8.toString());
+            String combinedQuery = query + " news";
+            String encodedQuery = URLEncoder.encode(combinedQuery, StandardCharsets.UTF_8.toString());
 
             // 调用 service 层的 scrape 方法
             return googleScraperService.scrapeGoogleResults(encodedQuery);
