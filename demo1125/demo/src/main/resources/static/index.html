@@ -47,23 +47,24 @@
     <!----之後再修改內容字串---->
 
     <div style="display: flex; justify-content: center; margin-top: 20px;">
-        <input type="checkbox" class="btn-check" id="sweet" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="sweet" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">甜</label>
+        <input type="checkbox" class="btn-check" id="earthquake" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="earthquake" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">地震</label>
        
-        <input type="checkbox" class="btn-check" id="cool" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="cool" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">涼</label>
+        <input type="checkbox" class="btn-check" id="typhoon" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="typhoon" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">颱風</label>
        
-        <input type="checkbox" class="btn-check" id="water" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="water" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">水</label>
+        <input type="checkbox" class="btn-check" id="flood" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="flood" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">洪水</label>
        
-        <input type="checkbox" class="btn-check" id="evaluate" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="evaluate" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">政大課程評價</label>
+        <input type="checkbox" class="btn-check" id="forecast" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="forecast" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">預測</label>
+
+        <input type="checkbox" class="btn-check" id="Taiwan" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="Taiwan" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">台灣</label>
        
-        <input type="checkbox" class="btn-check" id="reflection" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="reflection" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">心得</label>
+        <input type="checkbox" class="btn-check" id="Japan" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="Japan" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">日本</label>
        
-        <input type="checkbox" class="btn-check" id="recommand" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="recommand" style="margin: 0 .1px; color: orangered; border-color: darksalmon;">課程推薦</label>
     </div>
     </div>
     
@@ -77,12 +78,12 @@
             }
 
             // 獲取 checkbox 的值
-            const sweet = document.getElementById("sweet").checked;
-            const cool = document.getElementById("cool").checked;
-            const water = document.getElementById("water").checked;
-            const evaluate = document.getElementById("evaluate").checked;
-            const reflection = document.getElementById("reflection").checked;
-            const recommand = document.getElementById("recommand").checked;
+            const earthquake = document.getElementById("earthquake").checked;
+            const typhoon = document.getElementById("typhoon").checked;
+            const flood = document.getElementById("flood").checked;
+            const forecast = document.getElementById("forecast").checked;
+            const Taiwan = document.getElementById("Taiwan").checked;
+            const Japan = document.getElementById("Japan").checked;
 
             // 模擬 API 呼叫，展示處理邏輯
             fetch(`/api/google/search?query=${encodeURIComponent(query)}`)
