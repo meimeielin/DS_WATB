@@ -29,7 +29,27 @@
                 border-color: rosybrown;
             }
 
+            #search-container {
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: all 0.5s ease-in-out;
+                z-index: 10;
+            }
+
+            #search-container.centered {
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            #search-container.top {
+                top: 140px;
+                transform: translateX(-50%, 0);
+            }
+
             #results {
+                position: relative;
+                top: 30vh;
                 border-radius: 10px;
                 padding: 15px;
                 width: 70%;
@@ -40,8 +60,6 @@
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: 20px;
-                margin-top: 20px;
-                padding: 0;
             }
 
             #results li {
@@ -73,7 +91,6 @@
             }
 
             #results p {
-                margin-top: 10px;
                 font-size: 14px;
                 color: #555;
             }
@@ -81,34 +98,40 @@
     </head>
     <body>
         <div class="yscroll-auto"></div>
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-            <img src="picture/title.png" alt="Google Search Scraper" style="width: 600px; height: auto; cursor: pointer;" onclick="clearResults()">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh;">
+            <!--搜尋欄-->
+            <div id="search-container" class="centered">
+                <img src="picture/title.png" alt="Google Search Scraper" style="width: 600px; height: auto; cursor: pointer;" onclick="clearResults()">
+            
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <input type="text" id="query" placeholder="Enter search term" style="border:none; border-radius: 20px">
+                    <img src="search_button.png" alt="Search" onclick="search()" style="cursor: pointer; width: 30px; height: 30px; margin-left: 10px;">
+                </div>
+            
 
-            <div style="display: flex; align-items: center;">
-                <input type="text" id="query" placeholder="Enter search term" style="border:none; border-radius: 20px">
-                <img src="search_button.png" alt="Search" onclick="search()" style="cursor: pointer; width: 30px; height: 30px; margin-left: 10px;">
+                <!--checkbox-->
+                <!----之後再修改內容字串---->
+                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                    <input type="checkbox" class="btn-check" id="earthquake" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="earthquake" style="margin: 0 .1px; color:aqua; border-color:aliceblue">地震</label>
+                
+                    <input type="checkbox" class="btn-check" id="typhoon" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="typhoon" style="margin: 0 .1px; color:aqua; border-color: aliceblue">颱風</label>
+                
+                    <input type="checkbox" class="btn-check" id="flood" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="flood" style="margin: 0 .1px; color:aqua; border-color: aliceblue">洪水</label>
+                
+                    <input type="checkbox" class="btn-check" id="forecast" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="forecast" style="margin: 0 .1px; color:aqua; border-color: aliceblue">預測</label>
+
+                    <input type="checkbox" class="btn-check" id="Taiwan" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="Taiwan" style="margin: 0 .1px; color:aqua; border-color: aliceblue">台灣</label>
+                
+                    <input type="checkbox" class="btn-check" id="Japan" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="Japan" style="margin: 0 .1px; color:aqua; border-color: aliceblue">日本</label>
+                </div>
             </div>
-
-        <!----之後再修改內容字串---->
-            <div style="display: flex; justify-content: center; margin-top: 20px;">
-                <input type="checkbox" class="btn-check" id="earthquake" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="earthquake" style="margin: 0 .1px; color:aqua; border-color:aliceblue">地震</label>
-            
-                <input type="checkbox" class="btn-check" id="typhoon" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="typhoon" style="margin: 0 .1px; color:aqua; border-color: aliceblue">颱風</label>
-            
-                <input type="checkbox" class="btn-check" id="flood" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="flood" style="margin: 0 .1px; color:aqua; border-color: aliceblue">洪水</label>
-            
-                <input type="checkbox" class="btn-check" id="forecast" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="forecast" style="margin: 0 .1px; color:aqua; border-color: aliceblue">預測</label>
-
-                <input type="checkbox" class="btn-check" id="Taiwan" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="Taiwan" style="margin: 0 .1px; color:aqua; border-color: aliceblue">台灣</label>
-            
-                <input type="checkbox" class="btn-check" id="Japan" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="Japan" style="margin: 0 .1px; color:aqua; border-color: aliceblue">日本</label>
-            </div>
+            <!--搜尋結果-->
             <ul id="results"></ul>
         </div>
         
@@ -120,6 +143,10 @@
                     alert("Please enter a search term.");
                     return;
                 }
+
+                const searchContainer = document.getElementById("search-container");
+                searchContainer.classList.remove("centered");
+                searchContainer.classList.add("top");
 
                 // 獲取 checkbox 的值
                 const selectedCheckboxes = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
@@ -150,12 +177,6 @@
                         console.error(err);
                         alert("An error occurred while fetching results.");
                     });
-
-                // 隱藏所有 checkbox
-                document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
-                    checkbox.style.display = "none";
-                });
-            
             }
             
             function clearResults() {
