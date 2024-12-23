@@ -159,7 +159,7 @@
                 fetch(`/api/google/search?query=${encodeURIComponent(finalQuery)}`)
                     .then(response => response.json())
                     .then(data => {
-                        const resultsList = document.getElementById("results");
+                        var resultsList = document.getElementById("results");
                         resultsList.innerHTML = ""; // 清空舊的搜尋結果
 
                         if (data.error) {
