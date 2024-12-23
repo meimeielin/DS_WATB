@@ -93,11 +93,11 @@ public class GoogleQuery {
                 String text = result.text();
                 Element parent = result.closest("a"); // 找到包裹的超連結
                 String href = (parent != null) ? parent.attr("href") : "";
-
+                
                 if (!text.isEmpty() && href.startsWith("/search?")) {
                     Map<String, String> searchItem = new HashMap<>();
                     searchItem.put("text", text);
-                    searchItem.put("url", "https://www.google.com" + href); 
+                    searchItem.put("url", href);
                     relatedSearches.add(searchItem);
                 }
             } catch (Exception e) {

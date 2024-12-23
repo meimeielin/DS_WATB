@@ -168,7 +168,7 @@
             </div>
             <!--搜尋結果-->
             <ul id="results"></ul>
-            <div id="related-searches" class="related-searches-container" style="display: none;">
+            <div id="related-searches" class="related-searches-container">
                 <h3>其他人也搜尋了：</h3>
                 <div id="related-search-list" class="related-search-cards"></div>
             </div>
@@ -197,7 +197,7 @@
                 const finalQuery = query + " " + defaultKeywords;
 
                 // 模擬 API 呼叫，展示處理邏輯
-                fetch(`/api/google/search?query=${encodeURIComponent(finalQuery)}`)
+                fetch(`http://localhost:8080/api/google/search?query=${encodeURIComponent(finalQuery)}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error("Failed to fetch search results.");
@@ -217,12 +217,10 @@
                                 resultsList.appendChild(li);
                             });
                         }
-
-                        // 第二個 fetch：獲取相關搜尋
-                        return fetch(`/api/google/related-searches?query=${encodeURIComponent(finalQuery)}`);
                     })
+
+                fetch(`http://localhost:8080/api/google/related-searches?query=${encodeURIComponent(finalQuery)}`)
                     .then(response => {
-                        
                         return response.json();
                     })
                     .then(data => {
@@ -231,7 +229,6 @@
                         relatedSearchList.innerHTML = ""; // 清空舊的相關搜尋
 
                         if (Array.isArray(data) && data.length > 0) {
-                            relatedSearchContainer.style.display = "block"; // 顯示相關搜尋
 
                             data.forEach(item => {
                                 const span = document.createElement("span");

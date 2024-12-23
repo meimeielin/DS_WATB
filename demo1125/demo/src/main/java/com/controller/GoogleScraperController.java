@@ -41,13 +41,15 @@ public class GoogleScraperController {
             return googleScraperService.scrapeGoogleResults(encodedQuery);
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("IOException occurred while scraping Google results.");
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error occurred while scraping Google results.");
+            errorResponse.put("error", "Failed to fetch Google results due to an IOException.");
             return errorResponse;
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Unexpected error occurred.");
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid query parameter.");
+            errorResponse.put("error", "Unexpected error occurred while fetching results.");
             return errorResponse;
         }
     }
