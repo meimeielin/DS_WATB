@@ -42,31 +42,27 @@
             <input type="text" id="query" placeholder="Enter search term" style="border:none; border-radius: 20px">
             <img src="search_button.png" alt="Search" onclick="search()" style="cursor: pointer; width: 30px; height: 30px; margin-left: 10px;">
         </div>
-        <ul id="results"></ul>
-    
-
     <!----之後再修改內容字串---->
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <input type="checkbox" class="btn-check" id="earthquake" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="earthquake" style="margin: 0 .1px; color:aqua; border-color:aliceblue">地震</label>
+        
+            <input type="checkbox" class="btn-check" id="typhoon" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="typhoon" style="margin: 0 .1px; color:aqua; border-color: aliceblue">颱風</label>
+        
+            <input type="checkbox" class="btn-check" id="flood" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="flood" style="margin: 0 .1px; color:aqua; border-color: aliceblue">洪水</label>
+        
+            <input type="checkbox" class="btn-check" id="forecast" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="forecast" style="margin: 0 .1px; color:aqua; border-color: aliceblue">預測</label>
 
-    <div style="display: flex; justify-content: center; margin-top: 20px;">
-        <input type="checkbox" class="btn-check" id="earthquake" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="earthquake" style="margin: 0 .1px; color:aqua; border-color:aliceblue">地震</label>
-       
-        <input type="checkbox" class="btn-check" id="typhoon" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="typhoon" style="margin: 0 .1px; color:aqua; border-color: aliceblue">颱風</label>
-       
-        <input type="checkbox" class="btn-check" id="flood" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="flood" style="margin: 0 .1px; color:aqua; border-color: aliceblue">洪水</label>
-       
-        <input type="checkbox" class="btn-check" id="forecast" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="forecast" style="margin: 0 .1px; color:aqua; border-color: aliceblue">預測</label>
-
-        <input type="checkbox" class="btn-check" id="Taiwan" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="Taiwan" style="margin: 0 .1px; color:aqua; border-color: aliceblue">台灣</label>
-       
-        <input type="checkbox" class="btn-check" id="Japan" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="Japan" style="margin: 0 .1px; color:aqua; border-color: aliceblue">日本</label>
-       
-    </div>
+            <input type="checkbox" class="btn-check" id="Taiwan" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="Taiwan" style="margin: 0 .1px; color:aqua; border-color: aliceblue">台灣</label>
+        
+            <input type="checkbox" class="btn-check" id="Japan" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="Japan" style="margin: 0 .1px; color:aqua; border-color: aliceblue">日本</label>
+        </div>
+        <ul id="results"></ul>
     </div>
     
     <script>
