@@ -37,7 +37,7 @@ public class GoogleScraperController {
             String combinedQuery = query + " news";
             String encodedQuery = URLEncoder.encode(combinedQuery, StandardCharsets.UTF_8.toString());
 
-            // 调用 service 层的 scrape 方法
+            // 調用 service 層的 scrape 方法
             return googleScraperService.scrapeGoogleResults(encodedQuery);
         } catch (IOException e) {
             e.printStackTrace();
