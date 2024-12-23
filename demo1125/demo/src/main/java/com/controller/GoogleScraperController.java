@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +51,24 @@ public class GoogleScraperController {
             return errorResponse;
         }
     }
+
+    @GetMapping("/related-searches")
+    public List<Map<String, String>> getRelatedSearches(@RequestParam String query) {
+        try {
+            String combinedQuery = query + " news";
+            String encodedQuery = URLEncoder.encode(combinedQuery, StandardCharsets.UTF_8.toString());
+
+            return googleScraperService.scrapeGoogleResultsInterest(encodedQuery);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 返回帶有錯誤訊息的清單
+            return List.of(Map.of("text", "Error occurred while fetching related searches.", "url", ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 返回帶有錯誤訊息的清單
+            return List.of(Map.of("text", "Unexpected error occurred.", "url", ""));
+        }
+    }
+
+
 }

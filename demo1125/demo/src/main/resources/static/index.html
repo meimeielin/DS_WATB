@@ -60,6 +60,7 @@
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: 20px;
+                margin-bottom: 20px;
             }
 
             #results li {
@@ -94,6 +95,40 @@
                 font-size: 14px;
                 color: #555;
             }
+
+            .related-searches-container {
+                background: rgba(255, 255, 255, 0.9);
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                margin-top: 20px;
+                padding: 20px;
+            }
+
+            .related-search-cards {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+
+            .related-search-cards span {
+                background-color: #f1f3f4;
+                padding: 10px 15px;
+                border-radius: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+                color: #1a73e8;
+                font-size: 14px;
+                transition: all 0.3s ease;
+                text-align: center;
+            }
+
+            .related-search-cards span:hover {
+                background-color: #e8f0fe;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                transform: translateY(-3px);
+            }
+
         </style>
     </head>
     <body>
@@ -133,6 +168,12 @@
             </div>
             <!--搜尋結果-->
             <ul id="results"></ul>
+            <div id="related-searches" class="related-searches-container" style="display: none;">
+                <h3>其他人也搜尋了：</h3>
+                <div id="related-search-list" class="related-search-cards"></div>
+            </div>
+            
+            
         </div>
         
         <script>
@@ -157,7 +198,12 @@
 
                 // 模擬 API 呼叫，展示處理邏輯
                 fetch(`/api/google/search?query=${encodeURIComponent(finalQuery)}`)
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Failed to fetch search results.");
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         const resultsList = document.getElementById("results");
                         resultsList.innerHTML = ""; // 清空舊的搜尋結果
@@ -165,17 +211,44 @@
                         if (data.error) {
                             alert(data.error);
                         } else {
-                            // 將後端返回的結果顯示在畫面上
                             Object.entries(data).forEach(([title, url]) => {
                                 const li = document.createElement("li");
                                 li.innerHTML = `<a href="${url}" target="_blank">${title}</a>`;
                                 resultsList.appendChild(li);
                             });
                         }
+
+                        // 第二個 fetch：獲取相關搜尋
+                        return fetch(`/api/google/related-searches?query=${encodeURIComponent(finalQuery)}`);
+                    })
+                    .then(response => {
+                        
+                        return response.json();
+                    })
+                    .then(data => {
+                        const relatedSearchContainer = document.getElementById("related-searches");
+                        const relatedSearchList = document.getElementById("related-search-list");
+                        relatedSearchList.innerHTML = ""; // 清空舊的相關搜尋
+
+                        if (Array.isArray(data) && data.length > 0) {
+                            relatedSearchContainer.style.display = "block"; // 顯示相關搜尋
+
+                            data.forEach(item => {
+                                const span = document.createElement("span");
+                                span.textContent = item.text;
+                                span.onclick = () => {
+                                    document.getElementById("query").value = item.text;
+                                    search(); // 點擊觸發新搜尋
+                                };
+                                relatedSearchList.appendChild(span);
+                            });
+                        } else {
+                            relatedSearchContainer.style.display = "none"; // 如果沒有相關搜尋，隱藏區塊
+                        }
                     })
                     .catch(err => {
                         console.error(err);
-                        alert("An error occurred while fetching results.");
+                        alert("An error occurred: " + err.message);
                     });
             }
             
