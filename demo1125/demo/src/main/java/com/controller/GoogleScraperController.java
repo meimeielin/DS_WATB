@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +41,36 @@ public class GoogleScraperController {
             return googleScraperService.scrapeGoogleResults(encodedQuery);
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("IOException occurred while scraping Google results.");
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error occurred while scraping Google results.");
+            errorResponse.put("error", "Failed to fetch Google results due to an IOException.");
             return errorResponse;
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Unexpected error occurred.");
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid query parameter.");
+            errorResponse.put("error", "Unexpected error occurred while fetching results.");
             return errorResponse;
         }
     }
+
+    @GetMapping("/related-searches")
+    public List<Map<String, String>> getRelatedSearches(@RequestParam String query) {
+        try {
+            String combinedQuery = query + " news";
+            String encodedQuery = URLEncoder.encode(combinedQuery, StandardCharsets.UTF_8.toString());
+
+            return googleScraperService.scrapeGoogleResultsInterest(encodedQuery);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 返回帶有錯誤訊息的清單
+            return List.of(Map.of("text", "Error occurred while fetching related searches.", "url", ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 返回帶有錯誤訊息的清單
+            return List.of(Map.of("text", "Unexpected error occurred.", "url", ""));
+        }
+    }
+
+
 }

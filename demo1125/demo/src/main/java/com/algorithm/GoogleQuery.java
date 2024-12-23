@@ -6,7 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -73,5 +76,35 @@ public class GoogleQuery {
         }
 
         return retVal;
+    }
+
+    public List<Map<String, String>> queryInterest() throws IOException {
+        // 每次查询前都需要获取新的内容
+        String content = fetchContent();
+
+        List<Map<String, String>> relatedSearches = new ArrayList<>();
+        Document doc = Jsoup.parse(content);
+
+        // Google 的搜索结果结构可能会发生变化
+        Elements relatedSearchElements = doc.select(".b2Rnsc .dg6jd"); 
+
+        for (Element result : relatedSearchElements) {
+            try {
+                String text = result.text();
+                Element parent = result.closest("a"); // 找到包裹的超連結
+                String href = (parent != null) ? parent.attr("href") : "";
+                
+                if (!text.isEmpty() && href.startsWith("/search?")) {
+                    Map<String, String> searchItem = new HashMap<>();
+                    searchItem.put("text", text);
+                    searchItem.put("url", href);
+                    relatedSearches.add(searchItem);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return relatedSearches;
     }
 }
