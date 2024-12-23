@@ -1,7 +1,10 @@
+package com.controller;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class WebPage {
+	
 	public String url;
 	public String name;
 	public WordCounter counter;
