@@ -1,4 +1,4 @@
-package com.algorithm;
+package com.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;

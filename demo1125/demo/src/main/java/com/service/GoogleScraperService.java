@@ -1,6 +1,6 @@
 package com.service;
 
-import com.algorithm.GoogleQuery;
+import com.controller.GoogleQuery;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
