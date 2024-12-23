@@ -6,7 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,7 +22,7 @@ public class GoogleQuery {
     private String searchKeyword;
     private String url;
 
-    // 这里的 setSearchKeyword 需要动态更新搜索关键词
+    // 這裏的 setSearchKeyword 需要動態更新搜索關鍵詞
     public void setSearchKeyword(String searchKeyword) {
         this.searchKeyword = searchKeyword;
         try {
@@ -49,22 +52,22 @@ public class GoogleQuery {
     }
 
     public HashMap<String, String> query() throws IOException {
-        // 每次查询前都需要获取新的内容
+        // 每次查詢前都需要獲取新的内容
         String content = fetchContent();
 
         HashMap<String, String> retVal = new HashMap<>();
         Document doc = Jsoup.parse(content);
 
-        // Google 的搜索结果结构可能会发生变化
-        Elements searchResults = doc.select("a:has(h3)"); // 选择包含 <h3> 的链接
+        // Google 的搜索结果結構可能會發生變化
+        Elements searchResults = doc.select("a:has(h3)"); // 選擇包含 <h3> 的連結
 
         for (Element result : searchResults) {
             try {
-                String title = result.select("h3").text(); // 获取标题
-                String citeUrl = result.attr("href");      // 获取链接
+                String title = result.select("h3").text(); // 獲取標題
+                String citeUrl = result.attr("href");      // 獲取連結
 
                 if (!title.isEmpty() && citeUrl.startsWith("/url?q=")) {
-                    citeUrl = citeUrl.substring(7).split("&")[0]; // 去除多余的参数
+                    citeUrl = citeUrl.substring(7).split("&")[0]; // 去除多餘參數
                     retVal.put(title, citeUrl);
                 }
             } catch (Exception e) {
@@ -73,5 +76,35 @@ public class GoogleQuery {
         }
 
         return retVal;
+    }
+
+    public List<Map<String, String>> queryInterest() throws IOException {
+        // 每次查询前都需要获取新的内容
+        String content = fetchContent();
+
+        List<Map<String, String>> relatedSearches = new ArrayList<>();
+        Document doc = Jsoup.parse(content);
+
+        // Google 的搜索结果结构可能会发生变化
+        Elements relatedSearchElements = doc.select(".b2Rnsc .dg6jd"); 
+
+        for (Element result : relatedSearchElements) {
+            try {
+                String text = result.text();
+                Element parent = result.closest("a"); // 找到包裹的超連結
+                String href = (parent != null) ? parent.attr("href") : "";
+                
+                if (!text.isEmpty() && href.startsWith("/search?")) {
+                    Map<String, String> searchItem = new HashMap<>();
+                    searchItem.put("text", text);
+                    searchItem.put("url", href);
+                    relatedSearches.add(searchItem);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return relatedSearches;
     }
 }
