@@ -55,6 +55,7 @@ public class GoogleQuery {
         return retVal.toString();
     }
 
+    //得到搜尋結果的標題與連結
     public HashMap<String, String> query() throws IOException {
         // 每次查詢前都需要獲取新的内容
         String content = fetchContent();
@@ -82,10 +83,16 @@ public class GoogleQuery {
         return retVal;
     }
 
+    //取得搜尋結果Url的List
+    public static List<String> getAllUrls() throws IOException {
+        GoogleQuery googleQuery = new GoogleQuery();
+        HashMap<String, String> resultMap = googleQuery.query();
+        return new ArrayList<>(resultMap.values()); // 將所有值轉為 List
+    }
+
     public ArrayList<String> googleRelatedSearch() {
         ArrayList<String> relatedSearchResult = new ArrayList<>();
         WebDriver driver = WebDriverSetup.createDriver();
-
         try {
             driver.get(url);
 
