@@ -60,7 +60,7 @@
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: 20px;
-                margin-bottom: 20px;
+                margin-bottom: 30px;
             }
 
             #results li {
@@ -94,6 +94,17 @@
             #results p {
                 font-size: 14px;
                 color: #555;
+            }
+
+            #related-searches {
+                display: none;
+                margin-top: 20px;
+                padding: 20px;
+                width: 70%;
+                max-width: 1200px;
+                background: rgba(255, 255, 255, 0.9);
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
 
             .related-searches-container {
@@ -221,6 +232,9 @@
 
                 fetch(`http://localhost:8080/api/google/related-searches?query=${encodeURIComponent(finalQuery)}`)
                     .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Failed to fetch related search results.");
+                        }
                         return response.json();
                     })
                     .then(data => {
@@ -229,7 +243,7 @@
                         relatedSearchList.innerHTML = ""; // 清空舊的相關搜尋
 
                         if (Array.isArray(data) && data.length > 0) {
-
+                            relatedSearchContainer.style.display = "block";
                             data.forEach(item => {
                                 const span = document.createElement("span");
                                 span.textContent = item.text;
