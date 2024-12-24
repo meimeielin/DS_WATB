@@ -233,7 +233,7 @@
                 fetch(`http://localhost:8080/api/google/related-searches?query=${encodeURIComponent(finalQuery)}`)
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error("Failed to fetch related search results.");
+                            throw new Error("Failed to fetch related search results.:(");
                         }
                         return response.json();
                     })
