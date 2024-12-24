@@ -15,6 +15,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -81,28 +85,32 @@ public class GoogleQuery {
     public List<Map<String, String>> queryInterest() throws IOException {
         // 每次查询前都需要获取新的内容
         String content = fetchContent();
-
         List<Map<String, String>> relatedSearches = new ArrayList<>();
-        Document doc = Jsoup.parse(content);
+        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://www.google.com");
 
-        // Google 的搜索结果结构可能会发生变化
-        Elements relatedSearchElements = doc.select(".b2Rnsc .dg6jd"); 
+            WebElement searchBox = driver.findElement(By.name("q"));
+            searchBox.sendKeys(searchKeyword);
+            searchBox.submit();
 
-        for (Element result : relatedSearchElements) {
-            try {
-                String text = result.text();
-                Element parent = result.closest("a"); // 找到包裹的超連結
-                String href = (parent != null) ? parent.attr("href") : "";
-                
-                if (!text.isEmpty() && href.startsWith("/search?")) {
-                    Map<String, String> searchItem = new HashMap<>();
-                    searchItem.put("text", text);
-                    searchItem.put("url", href);
-                    relatedSearches.add(searchItem);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            Thread.sleep(2000);
+
+            WebElement relatedSearchesSection = driver.findElement(By.xpath("//h2[contains(text(), '其他人也搜尋了以下項目')]"));
+            List<WebElement> relatedItems = relatedSearchesSection.findElements(By.xpath("./following-sibling::div//a"));
+
+            for (WebElement item : relatedItems) {
+                Map<String, String> searchItem = new HashMap<>();
+                searchItem.put("text", item.getText());
+                searchItem.put("url", item.getAttribute("href"));
+                relatedSearches.add(searchItem);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 關閉 WebDriver
+            driver.quit();
         }
 
         return relatedSearches;

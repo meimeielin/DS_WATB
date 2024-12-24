@@ -52,6 +52,11 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.16.1</version> <!-- 请使用最新版本 -->
 		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
