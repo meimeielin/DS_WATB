@@ -181,7 +181,7 @@
             <ul id="results"></ul>
             <div id="related-searches" class="related-searches-container">
                 <h3>其他人也搜尋了：</h3>
-                <div id="related-search-list" class="related-search-cards"></div>
+                <ul id="related-search-list" class="related-search-cards"></ul>
             </div>
             
             
@@ -224,7 +224,7 @@
                         } else {
                             Object.entries(data).forEach(([title, url]) => {
                                 const li = document.createElement("li");
-                                li.innerHTML = `<a href="${url}" target="_blank">${title}</a>`;
+                                li.innerHTML =  `<a href="${url}" target="_blank">${title}</a>`;
                                 resultsList.appendChild(li);
                             });
                         }
@@ -245,13 +245,12 @@
                         if (Array.isArray(data) && data.length > 0) {
                             relatedSearchContainer.style.display = "block";
                             data.forEach(item => {
-                                const span = document.createElement("span");
-                                span.textContent = item.text;
+                                const span = document.createElement("li");
+                                span.textContent = item;
                                 span.onclick = () => {
-                                    document.getElementById("query").value = item.text;
+                                    document.getElementById("query").value = item;
                                     search(); // 點擊觸發新搜尋
                                 };
-                                relatedSearchList.appendChild(span);
                             });
                         } else {
                             relatedSearchContainer.style.display = "none"; // 如果沒有相關搜尋，隱藏區塊

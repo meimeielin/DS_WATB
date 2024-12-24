@@ -17,8 +17,9 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.stereotype.Component;
+
+import com.driver.WebDriverSetup;
 
 @Component
 public class GoogleQuery {
@@ -83,8 +84,7 @@ public class GoogleQuery {
 
     public ArrayList<String> googleRelatedSearch() {
         ArrayList<String> relatedSearchResult = new ArrayList<>();
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver"); // 更新為你的 ChromeDriver 路徑
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = WebDriverSetup.createDriver();
 
         try {
             driver.get(url);
