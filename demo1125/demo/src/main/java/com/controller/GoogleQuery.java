@@ -9,7 +9,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -82,37 +81,32 @@ public class GoogleQuery {
         return retVal;
     }
 
-    public List<Map<String, String>> queryInterest() throws IOException {
-        // 每次查询前都需要获取新的内容
-        String content = fetchContent();
-        List<Map<String, String>> relatedSearches = new ArrayList<>();
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
+    public ArrayList<String> googleRelatedSearch() {
+        ArrayList<String> relatedSearchResult = new ArrayList<>();
+        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver"); // 更新為你的 ChromeDriver 路徑
         WebDriver driver = new ChromeDriver();
+
         try {
-            driver.get("https://www.google.com");
+            driver.get(url);
 
-            WebElement searchBox = driver.findElement(By.name("q"));
-            searchBox.sendKeys(searchKeyword);
-            searchBox.submit();
+            // 等待頁面加載完成（可以改用 WebDriverWait）
+            Thread.sleep(3000);
 
-            Thread.sleep(2000);
+            // 找到「其他人也搜尋了」的關鍵字元素
+            List<WebElement> keywordElements = driver.findElements(By.xpath("//span[@class='dg6jd']"));
 
-            WebElement relatedSearchesSection = driver.findElement(By.xpath("//h2[contains(text(), '其他人也搜尋了以下項目')]"));
-            List<WebElement> relatedItems = relatedSearchesSection.findElements(By.xpath("./following-sibling::div//a"));
-
-            for (WebElement item : relatedItems) {
-                Map<String, String> searchItem = new HashMap<>();
-                searchItem.put("text", item.getText());
-                searchItem.put("url", item.getAttribute("href"));
-                relatedSearches.add(searchItem);
+            // 提取關鍵字文字
+            for (WebElement element : keywordElements) {
+                String text = element.getText();
+                relatedSearchResult.add(text);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // 關閉 WebDriver
             driver.quit();
         }
 
-        return relatedSearches;
+        return relatedSearchResult;
     }
 }
