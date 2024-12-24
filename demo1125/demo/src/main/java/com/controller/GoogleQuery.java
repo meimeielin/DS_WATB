@@ -51,6 +51,7 @@ public class GoogleQuery {
         return retVal.toString();
     }
 
+    //得到搜尋結果的標題與連結
     public HashMap<String, String> query() throws IOException {
         // 每次查詢前都需要獲取新的内容
         String content = fetchContent();
@@ -78,6 +79,14 @@ public class GoogleQuery {
         return retVal;
     }
 
+    //取得搜尋結果Url的List
+    public static List<String> getAllUrls() throws IOException {
+        GoogleQuery googleQuery = new GoogleQuery();
+        HashMap<String, String> resultMap = googleQuery.query();
+        return new ArrayList<>(resultMap.values()); // 將所有值轉為 List
+    }
+
+    //Google 提供的推薦或相關搜尋項目
     public List<Map<String, String>> queryInterest() throws IOException {
         // 每次查询前都需要获取新的内容
         String content = fetchContent();

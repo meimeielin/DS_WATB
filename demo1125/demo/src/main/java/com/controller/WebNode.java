@@ -3,58 +3,59 @@ package com.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class WebNode
-{
-	public WebNode parent;
-	public ArrayList<WebNode> children;
-	public WebPage webPage;
-	public double nodeScore;// This node's score += all its children's nodeScore
+import java.io.IOException;
+import java.util.ArrayList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
-	public WebNode(WebPage webPage)
-	{
-		this.webPage = webPage;
-		this.children = new ArrayList<WebNode>();
-	}
+public class WebNode {
+    public WebPage webPage;
+    public ArrayList<WebNode> children;
+    public double nodeScore;
 
-	public void setNodeScore(ArrayList<Keyword> keywords) throws IOException{
-		// YOUR TURN
-		// 2. calculate the score of this node
-		// this method should be called in post-order mode
+    public WebNode(WebPage webPage) {
+        this.webPage = webPage;
+        this.children = new ArrayList<>();
+    }
 
-		// You should do something like:
-		// 		1.compute the score of this webPage
-		// 		2.set this score to initialize nodeScore
-		//		3.nodeScore must be the score of this webPage plus all children's nodeScore
-		webPage.setScore(keywords);
-		nodeScore = webPage.score;
-		for(WebNode child: children) {
-			nodeScore += child.nodeScore;
-		}
-		
-	}
+    public void addChild(WebNode child) {
+        this.children.add(child);
+    }
 
-	public void addChild(WebNode child){
-		// add the WebNode to its children list
-		this.children.add(child);
-		child.parent = this;
-	}
+    // 递归爬取子网页
+    public void crawlChildren(int depth) {
+        if (depth <= 0) return;
 
-	public boolean isTheLastChild(){
-		if (this.parent == null)
-			return true;
-		ArrayList<WebNode> siblings = this.parent.children;
+        try {
+            Document doc = Jsoup.connect(webPage.url).get();
+            Elements links = doc.select("a[href]");
 
-		return this.equals(siblings.get(siblings.size() - 1));
-	}
+            for (var link : links) {
+                String childUrl = link.attr("abs:href");
+                if (childUrl.isEmpty() || !childUrl.startsWith("http")) continue;
 
-	public int getDepth(){
-		int retVal = 1;
-		WebNode currNode = this;
-		while (currNode.parent != null)
-		{
-			retVal++;
-			currNode = currNode.parent;
-		}
-		return retVal;
-	}
+                String title = link.text();
+                WebNode childNode = new WebNode(new WebPage(childUrl));
+                this.addChild(childNode);
+
+                // 递归爬取
+                childNode.crawlChildren(depth - 1);
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to crawl URL: " + webPage.url);
+        }
+    }
+
+    // 计算当前节点的总分
+    public void calculateNodeScore(ArrayList<Keyword> keywords) throws IOException {
+        webPage.setScore(keywords);
+        this.nodeScore = webPage.score;
+
+        for (WebNode child : children) {
+            child.calculateNodeScore(keywords);
+            this.nodeScore += child.nodeScore;
+        }
+    }
 }
+
