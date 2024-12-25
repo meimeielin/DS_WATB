@@ -3,14 +3,11 @@ package com.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,24 +55,20 @@ public class GoogleScraperController {
     }
 
     @GetMapping("/related-searches")
-    public ResponseEntity<?> getRelatedSearches(@RequestParam String query) {
+    public List<Map<String, String>> getRelatedSearches(@RequestParam String query) {
         try {
             String combinedQuery = query + " news";
             String encodedQuery = URLEncoder.encode(combinedQuery, StandardCharsets.UTF_8.toString());
 
-            ArrayList<String> relatedSearches = googleScraperService.scrapeGoogleResultsInterest(encodedQuery);
-            if (relatedSearches.isEmpty()) {
-                return ResponseEntity.ok(List.of(Map.of("text", "No related searches found.", "url", "")));
-            }
-            return ResponseEntity.ok(relatedSearches);
+            return googleScraperService.scrapeGoogleResultsInterest(encodedQuery);
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Failed to fetch related searches due to an IOException: " + e.getMessage()));
+            // 返回帶有錯誤訊息的清單
+            return List.of(Map.of("text", "Error occurred while fetching related searches.", "url", ""));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Unexpected error occurred: " + e.getMessage()));
+            // 返回帶有錯誤訊息的清單
+            return List.of(Map.of("text", "Unexpected error occurred.", "url", ""));
         }
     }
 

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+
 public class WordCounter
 {
 	private String urlStr;
@@ -24,16 +25,14 @@ public class WordCounter
 		InputStream in = conn.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-		String retVal = "";
-
-		String line = null;
-
-		while ((line = br.readLine()) != null)
-		{
-			retVal = retVal + line + "\n";
+		StringBuilder retVal = new StringBuilder();
+		
+		String line;
+		while ((line = br.readLine()) != null) {
+			retVal.append(line).append("\n");
 		}
+		return retVal.toString();
 
-		return retVal;
 	}
 
 	public int countKeyword(String keyword) throws IOException

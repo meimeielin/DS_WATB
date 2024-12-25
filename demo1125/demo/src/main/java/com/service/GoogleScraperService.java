@@ -1,8 +1,12 @@
 package com.service;
 
+import com.controller.GoogleQuery;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -21,9 +25,9 @@ public class GoogleScraperService {
         return googleQuery.query();  // 获取搜索结果
     }
 
-    public ArrayList<String> scrapeGoogleResultsInterest(String query) throws IOException {
+    public List<Map<String, String>> scrapeGoogleResultsInterest(String query) throws IOException {
         googleQuery.setSearchKeyword(query);  // 每次调用时都设置新的关键词
-        return googleQuery.googleRelatedSearch();  // 获取搜索结果
+        return googleQuery.queryInterest();  // 获取搜索结果
     }
 }
 
