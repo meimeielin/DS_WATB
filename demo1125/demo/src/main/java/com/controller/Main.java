@@ -66,13 +66,13 @@ public class Main implements CommandLineRunner {
             }
             scanner.close();
 
-            System.out.println(googleQuery.query());  // 輸出查詢結果
             //
             tree.setPostOrderScore(keywords);
-            
+            tree.sortTreeByScore();
             tree.eularPrintTree();
 
             }
+            System.out.println(googleQuery.query());  // 輸出查詢結果
 
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
