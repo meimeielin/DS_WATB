@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.controller;
 
 public class Keyword{
@@ -29,36 +28,4 @@ public class Keyword{
 			return name.hashCode();
 	}
 
-=======
-package com.controller;
-
-public class Keyword{
-	public String name;
-	public double weight;
-
-	public Keyword(String name, double weight){
-		
-		this.name = name;
-		this.weight = weight;
-	}
-
-	@Override
-	public String toString(){
-		return "[" + name + "," + weight + "]";
-	}
-
-	@Override
-		public boolean equals(Object obj) {
-			if (this == obj) return true;
-			if (obj == null || getClass() != obj.getClass()) return false;
-			Keyword keyword = (Keyword) obj;
-			return name.equals(keyword.name);
-	}
-
-	@Override
-		public int hashCode() {
-			return name.hashCode();
-	}
-
->>>>>>> bbeaab608e781cbbca86a9f140d3b51ddd9c5f69
 }
