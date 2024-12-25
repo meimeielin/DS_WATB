@@ -1,10 +1,31 @@
-add Fang 3 1.2
-add Fang 3 1.1
-add Yu 5 1.8
-add NCCU 2 0.6
-add UCSB 1 1.9
-peek
-add MIS 4 2.2
-removeMin
-add Badminton 1 0.6
-output
+30
+earthquake 1
+typhoon 1
+hurricane 1
+cyclone 1
+mudslide 1
+flood 1
+rainstorm 1
+Taiwan 1
+Japan 1
+windstorm 1
+disaster 1
+hail 1
+volcano 1
+blizzard 1
+tsunami 1
+landslide 1
+avalanche 1
+tornado 1
+drought 1
+foehn 1
+casualties 0.5
+precautions 0.5
+climate 0.5
+forecast 0.5
+region 0.3
+impact 0.3
+government 0.3
+measures 0.3
+policy 0.3
+natural 0.3
