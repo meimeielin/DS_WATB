@@ -24,7 +24,7 @@ public class Main implements CommandLineRunner {
             if (args.length > 0) {
             googleQuery.setSearchKeyword(args[0]);  // 使用傳入的搜索關鍵字（從命令行參數獲取）
             } else {
-            googleQuery.setSearchKeyword("Disaster");  // 默認值，如果没有傳入参数
+            googleQuery.setSearchKeyword("Disaster news");  // 默認值，如果没有傳入参数
             }
 
             ArrayList<String> allUrls = (ArrayList<String>) googleQuery.getAllUrls();
@@ -38,7 +38,6 @@ public class Main implements CommandLineRunner {
                 System.out.println(url);
             }
 
-            
             for (String searchUrl : allUrls) {
             // root node
             WebPage rootPage = new WebPage(searchUrl);
@@ -75,8 +74,6 @@ public class Main implements CommandLineRunner {
 
             }
 
-            System.out.println(googleQuery.query());  // 輸出查詢結果
-
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
             
@@ -88,5 +85,4 @@ public class Main implements CommandLineRunner {
 
     }
 }
-
 

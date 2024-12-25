@@ -22,10 +22,6 @@ public class WebTree {
     public void setPostOrderScore(ArrayList<Keyword> keywords) {
     try {
         root.calculateNodeScore(keywords);
-        System.out.println("Node (Score: " + root.nodeScore + ")");
-        for (WebNode child : root.children) {
-            System.out.println("Child Node (Score: " + child.nodeScore + ")");
-        }
     } catch (IOException e) {
         System.err.println("Error calculating node score: " + e.getMessage());
         // 可以考慮繼續處理，或者重新拋出異常

@@ -30,7 +30,11 @@ public class WebNode {
             Document doc = Jsoup.connect(webPage.url).get();
             Elements links = doc.select("a[href]");
 
+            //int childCount = 0; // 記錄已爬取的子網頁數量
+            //int maxChildren = 3; // 限制最多爬取的子網頁數量
+
             for (var link : links) {
+                //if (childCount >= maxChildren) break; // 若已達上限，停止爬取
                 String childUrl = link.attr("abs:href");
                 if (childUrl.isEmpty() || !childUrl.startsWith("http") || visitedUrls.contains(childUrl)) continue;
 
@@ -40,7 +44,7 @@ public class WebNode {
                 this.addChild(childNode);
 
                 // 遞歸爬取
-                childNode.crawlChildren(depth - 1, visitedUrls);
+                //childNode.crawlChildren(depth - 1, visitedUrls);
             }
         } catch (IOException e) {
             
@@ -60,7 +64,8 @@ public class WebNode {
                 this.nodeScore += child.nodeScore;
             }
         }
-
+        System.out.println("錯誤退散"+nodeScore);
     }
 }
+
 
