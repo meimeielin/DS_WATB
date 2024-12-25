@@ -117,16 +117,7 @@ public class GoogleQuery {
         System.out.println("2");
         HashMap<String, String> resultMap = this.query();
         System.out.println("end");
-        
-        List<String> urls = new ArrayList<>();
-        int count = 0;
-
-        for (String value : resultMap.values()) {
-            if (count >= 5) break; // 確保只添加前 5 個
-            urls.add(value);
-            count++;
-        }
-
+        List<String> urls = new ArrayList<>(resultMap.values());// 將所有值轉為 List
         for (String url : urls) {
             System.out.println(url);
         }
