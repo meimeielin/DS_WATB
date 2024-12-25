@@ -98,11 +98,11 @@
 
             #related-searches {
                 display: none;
-                margin-top: 20px;
+                margin-top: 200px;
                 padding: 20px;
                 width: 70%;
                 max-width: 1200px;
-                background: rgba(255, 255, 255, 0.9);
+                background: rgba(255, 255, 255, 0.7);
                 border-radius: 10px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
@@ -123,15 +123,17 @@
             }
 
             .related-search-cards span {
-                background-color: #f1f3f4;
+                display: inline-block;
+                margin: 5px;
                 padding: 10px 15px;
                 border-radius: 20px;
+                background-color: #f1f3f4;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 cursor: pointer;
-                color: #1a73e8;
+                color: #1a2636;
                 font-size: 14px;
-                transition: all 0.3s ease;
                 text-align: center;
+                transition: all 0.3s ease;
             }
 
             .related-search-cards span:hover {
@@ -245,15 +247,20 @@
                         if (Array.isArray(data) && data.length > 0) {
                             relatedSearchContainer.style.display = "block";
                             data.forEach(item => {
-                                const span = document.createElement("li");
+                                const span = document.createElement("span");
                                 span.textContent = item;
+                                console.log(item);
                                 span.onclick = () => {
                                     document.getElementById("query").value = item;
                                     search(); // 點擊觸發新搜尋
                                 };
+                                relatedSearchList.appendChild(span);
                             });
                         } else {
-                            relatedSearchContainer.style.display = "none"; // 如果沒有相關搜尋，隱藏區塊
+                            relatedSearchContainer.style.display = "block"; // 保持顯示
+                            const span = document.createElement("span");
+                            span.textContent = "No related searches found.";
+                            relatedSearchList.appendChild(span);
                         }
                     })
                     .catch(err => {
