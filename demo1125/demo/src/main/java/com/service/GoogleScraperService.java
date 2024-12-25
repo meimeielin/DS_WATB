@@ -23,7 +23,7 @@ public class GoogleScraperService {
 
     public ArrayList<String> scrapeGoogleResultsInterest(String query) throws IOException {
         googleQuery.setSearchKeyword(query);  // 每次调用时都设置新的关键词
-        return googleQuery.googleRelatedSearch();  // 获取搜索结果
+        return googleQuery.googleRelatedSearch() ;  // 获取搜索结果
     }
 }
 

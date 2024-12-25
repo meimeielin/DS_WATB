@@ -34,7 +34,6 @@ public class Main implements CommandLineRunner {
             return;
             }
             
-            System.out.println(allUrls.size());
             for (String url : allUrls) {
                 System.out.println(url);
             }
@@ -64,13 +63,11 @@ public class Main implements CommandLineRunner {
                 double weight = scanner.nextDouble();
                 Keyword k = new Keyword(name, weight);
                 keywords.add(k);
-                //test
                 System.out.println(k.toString());
             }
             scanner.close();
 
-            //testing
-            System.out.println("(Main)query:");  // 輸出查詢結果  + googleQuery.query()
+            System.out.println(googleQuery.query());  // 輸出查詢結果
             //
             tree.setPostOrderScore(keywords);
             

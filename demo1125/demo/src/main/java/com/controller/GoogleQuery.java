@@ -161,4 +161,8 @@ public class GoogleQuery {
 
         return relatedSearchResult;
     }
+
+    public int getKeywordCount() {
+        return keywordCount;
+    }
 }
