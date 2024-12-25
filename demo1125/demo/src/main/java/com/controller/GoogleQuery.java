@@ -25,23 +25,41 @@ import org.springframework.stereotype.Component;
 public class GoogleQuery {
     private String searchKeyword;
     private String url;
+    private int keywordCount;
 
     // 這裏的 setSearchKeyword 需要動態更新搜索關鍵詞
     public void setSearchKeyword(String searchKeyword) {
         this.searchKeyword = searchKeyword;
+        keywordCount = searchKeyword.split("\\s+").length;
+        //測試用step1
+        System.out.print("Search keyword: " + searchKeyword);
+        System.out.println("Number of keywords: " + keywordCount);
         try {
             String encodeKeyword = java.net.URLEncoder.encode(searchKeyword, "utf-8");
             this.url = "https://www.google.com/search?q=" + encodeKeyword + "&oe=utf8&num=20";
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        //測試用step2
+        System.out.println(url);
     }
 
     private String fetchContent() throws IOException {
-        StringBuilder retVal = new StringBuilder();
+        //測試用step5
+        System.out.println("fetchContent1");
 
+        System.out.println(url);
+
+        if (url == null || url.isEmpty()) {
+        throw new IllegalStateException("URL is null or empty. Did you forget to call setSearchKeyword()?");
+        }
+
+        StringBuilder retVal = new StringBuilder();
+        System.out.println("fetchContent2");
         URL u = new URL(url);
+        System.out.println("fetchContent3");
         URLConnection conn = u.openConnection();
+        System.out.println("fetchContent4");
         conn.setRequestProperty("User-agent", "Chrome/107.0.5304.107");
         InputStream in = conn.getInputStream();
 
@@ -58,10 +76,18 @@ public class GoogleQuery {
     //得到搜尋結果的標題與連結
     public HashMap<String, String> query() throws IOException {
         // 每次查詢前都需要獲取新的内容
+        //測試用step4
+        System.out.println("query1");
         String content = fetchContent();
 
+        System.out.println("query2");
         HashMap<String, String> retVal = new HashMap<>();
+        System.out.println(retVal);
+
+        System.out.println("query3");
         Document doc = Jsoup.parse(content);
+
+        System.out.println("query4");
 
         // Google 的搜索结果結構可能會發生變化
         Elements searchResults = doc.select("a:has(h3)"); // 選擇包含 <h3> 的連結
@@ -84,10 +110,28 @@ public class GoogleQuery {
     }
 
     //取得搜尋結果Url的List
-    public static List<String> getAllUrls() throws IOException {
-        GoogleQuery googleQuery = new GoogleQuery();
-        HashMap<String, String> resultMap = googleQuery.query();
-        return new ArrayList<>(resultMap.values()); // 將所有值轉為 List
+    public List<String> getAllUrls() throws IOException {
+        //測試用step3
+        System.out.println("1");
+        System.out.println(this.url);
+        System.out.println("2");
+        HashMap<String, String> resultMap = this.query();
+        System.out.println("end");
+        
+        List<String> urls = new ArrayList<>();
+        int count = 0;
+
+        for (String value : resultMap.values()) {
+            if (count >= 5) break; // 確保只添加前 5 個
+            urls.add(value);
+            count++;
+        }
+
+        for (String url : urls) {
+            System.out.println(url);
+        }
+        return urls;
+        
     }
 
     //Google 提供的推薦或相關搜尋項目
@@ -123,5 +167,9 @@ public class GoogleQuery {
         }
 
         return relatedSearches;
+    }
+
+    public int getKeywordCount() {
+        return keywordCount;
     }
 }

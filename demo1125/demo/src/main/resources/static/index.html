@@ -188,13 +188,47 @@
         </div>
         
         <script>
-            
+            //擋掉之後不再執行除非輸入其他關鍵字（待解決）
             function search() {
                 var query = document.getElementById("query").value.trim(); // 獲取用戶輸入
                 if (!query) {
                     alert("Please enter a search term.");
                     return;
                 }
+
+                // 檢查是否輸入超過10個字元
+                if(query.length > 10){
+                    alert("please enter less than 10 characters.");
+                    return;
+
+                }
+                
+                /*
+                // 檢查是否輸入有效的搜尋關鍵字
+                fetch('input.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        const validKeywords = text.split('\n').map(keyword => keyword.replace(/[0-9\s]/g, '').trim()).filter(Boolean);
+                        const isValid = validKeywords.some(keyword => query.includes(keyword));
+                        if (!isValid) {
+                            alert("Please enter a valid search term.");
+                            return;
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("An error occurred while validating the search term.");
+                    });
+                    */
+
+                /*
+                if(!query.includes("earthquake")){
+                    alert("Please enter a valid search term.");
+                    return;
+                }
+                */
+
+                
 
                 const searchContainer = document.getElementById("search-container");
                 searchContainer.classList.remove("centered");
