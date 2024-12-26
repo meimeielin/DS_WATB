@@ -187,6 +187,14 @@
         </div>
         
         <script>
+
+            document.getElementById("query").addEventListener("input", function (event) {
+                // 將全形英文轉換為半形英文
+                this.value = this.value.replace(/[\uFF01-\uFF5E]/g, function (char) {
+                    return String.fromCharCode(char.charCodeAt(0) - 0xFEE0);
+                });
+            });
+
             //擋掉之後不再執行除非輸入其他關鍵字（待解決）
             function search() {
                 var query = document.getElementById("query").value.trim(); // 獲取用戶輸入
@@ -274,8 +282,10 @@
                         const relatedSearchContainer = document.getElementById("related-searches");
                         const relatedSearchList = document.getElementById("related-search-list");
                         relatedSearchList.innerHTML = ""; // 清空舊的相關搜尋
-
-                        if (Array.isArray(data) && data.length > 0) {
+                        if(String(data) === "[object Object]"){
+                            relatedSearchContainer.style.display = "block";
+                            relatedSearchList.textContent = "No related searches found.";
+                        }else if (Array.isArray(data)){
                             relatedSearchContainer.style.display = "block";
                             data.forEach(item => {
                                 const span = document.createElement("span");
@@ -286,8 +296,8 @@
                                 };
                                 relatedSearchList.appendChild(span);
                             });
-                        } else {
-                            relatedSearchContainer.style.display = "none"; // 如果沒有相關搜尋，隱藏區塊
+                        }else if (typeof data === "object" && Object.keys(data).length === 0) {
+                            console.log("data 是空物件");
                         }
                     })
                     .catch(err => {
