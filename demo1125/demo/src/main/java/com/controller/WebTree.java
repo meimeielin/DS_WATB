@@ -62,12 +62,13 @@ public class WebTree {
     public WebNode getRoot() {
         return root;
     }
-        //取得父網頁總值
-        public double getRootNodeScore() {
-            if (root != null) {
-                return root.nodeScore;
-            }
-            return 0.0; // 如果根节点为 null，返回 0.0 或其他默认值
+        
+    //取得父網頁總值
+    public double getRootNodeScore() {
+        if (root != null) {
+            return root.nodeScore;
         }
+            return 0.0; // 如果根节点为 null，返回 0.0 或其他默认值
+    }
 }
 
