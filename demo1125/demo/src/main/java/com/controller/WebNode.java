@@ -24,34 +24,43 @@ public class WebNode {
 
     // 遞歸爬取子網頁
     public void crawlChildren(int depth, HashSet<String> visitedUrls) {
-        if (depth <= 0) return;
+    if (depth <= 0) return; // 如果深度為0，停止爬取
 
-        try {
-            Document doc = Jsoup.connect(webPage.url).get();
-            Elements links = doc.select("a[href]");
+    try {
+        Document doc = Jsoup.connect(webPage.url).get();
+        Elements links = doc.select("a[href]");
 
-            //int childCount = 0; // 記錄已爬取的子網頁數量
-            //int maxChildren = 3; // 限制最多爬取的子網頁數量
+        int childCount = 0; // 記錄已爬取的子網頁數量
+        int maxChildren = 3; // 限制最多爬取的子網頁數量
 
-            for (var link : links) {
-                //if (childCount >= maxChildren) break; // 若已達上限，停止爬取
-                String childUrl = link.attr("abs:href");
-                if (childUrl.isEmpty() || !childUrl.startsWith("http") || visitedUrls.contains(childUrl)) continue;
-
-                visitedUrls.add(childUrl);
-                String title = link.text();
-                WebNode childNode = new WebNode(new WebPage(childUrl));
-                this.addChild(childNode);
-
-                // 遞歸爬取
-                //childNode.crawlChildren(depth - 1, visitedUrls);
+        for (var link : links) {
+            if (childCount >= maxChildren) {
+                System.out.print("Reached max children. Stopping."); 
+                break; // 若已達上限，停止爬取
             }
-        } catch (IOException e) {
-            
-            System.out.println("Failed to crawl URL: " + webPage.url);
-            this.nodeScore = 0; // 如果無法設置分數，則設置為0
+
+            String childUrl = link.attr("abs:href").split("#")[0]; // 去除錨點
+            childUrl = childUrl.endsWith("/") ? childUrl.substring(0, childUrl.length() - 1) : childUrl; // 去除末尾的 "/"
+
+            if (childUrl.isEmpty() || !childUrl.startsWith("http") || visitedUrls.contains(childUrl)) continue;
+
+            visitedUrls.add(childUrl);
+            System.out.println("Depth: " + depth + ", Visiting: " + childUrl); // 日誌記錄
+
+            String title = link.text();
+            WebNode childNode = new WebNode(new WebPage(childUrl));
+            this.addChild(childNode);
+            childCount++;
+
+            // 遞歸爬取
+            childNode.crawlChildren(depth - 1, visitedUrls);
         }
+    } catch (IOException e) {
+        System.out.println("Failed to crawl URL: " + webPage.url);
+        this.nodeScore = 0; // 如果無法設置分數，則設置為0
     }
+}
+
 
     //計算當前節點的總分
     public void calculateNodeScore(ArrayList<Keyword> keywords) throws IOException {
@@ -66,6 +75,9 @@ public class WebNode {
         }
         System.out.println("錯誤退散"+nodeScore);
     }
-}
 
+    public double getNodeScore() {
+        return nodeScore;
+    }
+}
 
