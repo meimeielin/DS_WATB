@@ -25,5 +25,9 @@ public class WebPage {
 
 	}
 
+	public double getScore() {
+		return score;
+	}
+
 }
 
