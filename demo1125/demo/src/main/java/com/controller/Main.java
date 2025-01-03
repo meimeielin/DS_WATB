@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class Main implements CommandLineRunner {
 
     private final GoogleQuery googleQuery;
+    public static ArrayList<WebTree> webTrees;
 
     public Main(GoogleQuery googleQuery) {
         this.googleQuery = googleQuery;

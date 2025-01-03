@@ -79,5 +79,9 @@ public class WebNode {
     public double getNodeScore() {
         return nodeScore;
     }
+
+    public WebPage getWebPage(){
+        return webPage;
+    }
 }
 

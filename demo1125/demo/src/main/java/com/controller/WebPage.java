@@ -29,5 +29,8 @@ public class WebPage {
 		return score;
 	}
 
+	public String getUrl(){
+		return url;
+	}
 }
 
