@@ -209,6 +209,12 @@
                     return;
 
                 }
+
+                // 檢查是否輸入的內容只有數字
+                if (/^\d+$/.test(query)) {
+                    alert("Please enter a valid search term that is not just numbers.");
+                    return;
+                }
                 
                 /*
                 // 檢查是否輸入有效的搜尋關鍵字
