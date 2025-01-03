@@ -35,7 +35,7 @@ public class GoogleQuery {
         System.out.print("Search keyword: " + searchKeyword);
         System.out.println("Number of keywords: " + keywordCount);
         try {
-            String encodeKeyword = java.net.URLEncoder.encode(searchKeyword, "utf-8");
+            String encodeKeyword = java.net.URLEncoder.encode(searchKeyword, "UTF-8");
             this.url = "https://www.google.com/search?q=" + encodeKeyword + "&oe=utf8&num=20";
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -61,9 +61,21 @@ public class GoogleQuery {
         URLConnection conn = u.openConnection();
         System.out.println("fetchContent4");
         conn.setRequestProperty("User-agent", "Chrome/107.0.5304.107");
+        // 獲取回應的 Content-Type 頭
+        String contentType = conn.getHeaderField("Content-Type");
+        System.out.println("Content-Type: " + contentType);
+
+        // 從 Content-Type 中提取 charset，如果不存在，默認為 UTF-8
+        String charset = "UTF-8"; // 默認設置為 UTF-8
+        if (contentType != null && contentType.contains("charset=")) {
+            charset = contentType.split("charset=")[1];
+            System.out.println("Charset found in Content-Type: " + charset);
+        }
+
         InputStream in = conn.getInputStream();
 
-        try (BufferedReader bufReader = new BufferedReader(new InputStreamReader(in, "utf-8"))) {
+        // 使用從 Content-Type 取得的 charset 設置編碼
+        try (BufferedReader bufReader = new BufferedReader(new InputStreamReader(in, charset))) {
             String line;
             while ((line = bufReader.readLine()) != null) {
                 retVal.append(line);
