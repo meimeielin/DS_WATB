@@ -205,7 +205,7 @@
 
                 // 檢查是否輸入超過50個字元
                 if(query.length > 50){
-                    alert("please enter less than 10 characters.");
+                    alert("please enter less than 50 characters.");
                     return;
 
                 }
@@ -213,6 +213,12 @@
                 // 檢查是否輸入的內容只有數字
                 if (/^\d+$/.test(query)) {
                     alert("Please enter a valid search term that is not just numbers.");
+                    return;
+                }
+            
+                // 檢查是否輸入的內容只有英文
+                if (!/^[a-zA-Z\s.,!?()-_]+$/.test(query)) {
+                    alert("Please enter a valid search term with English letters only.");
                     return;
                 }
                 
