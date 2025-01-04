@@ -27,54 +27,50 @@ public class GoogleQuery {
     private String url;
     private int keywordCount;
 
-    // 這裏的 setSearchKeyword 需要動態更新搜索關鍵詞
     public void setSearchKeyword(String searchKeyword) {
         this.searchKeyword = searchKeyword;
         keywordCount = searchKeyword.split("\\s+").length;
-        //測試用step1
-        System.out.print("Search keyword: " + searchKeyword);
+
+        // 測試用步驟
+        System.out.println("Search keyword: " + searchKeyword);
         System.out.println("Number of keywords: " + keywordCount);
+
         try {
-            String encodeKeyword = java.net.URLEncoder.encode(searchKeyword, "UTF-8");
-            this.url = "https://www.google.com/search?q=" + encodeKeyword + "&oe=utf8&num=20";
+            // 只對原始關鍵字進行 URL 編碼，避免雙重編碼（這行好像會導致雙重編碼）
+            //String encodeKeyword = java.net.URLEncoder.encode(searchKeyword, "UTF-8");
+            //限制英文搜尋結果
+            this.url = "https://www.google.com/search?q=" + searchKeyword + "&oe=utf8&num=20&lr=lang_en";
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        //測試用step2
-        System.out.println(url);
+
+        System.out.println("Generated URL: " + url);
     }
 
     private String fetchContent() throws IOException {
-        //測試用step5
         System.out.println("fetchContent1");
-
         System.out.println(url);
 
         if (url == null || url.isEmpty()) {
-        throw new IllegalStateException("URL is null or empty. Did you forget to call setSearchKeyword()?");
+            throw new IllegalStateException("URL is null or empty. Did you forget to call setSearchKeyword()?");
         }
 
         StringBuilder retVal = new StringBuilder();
-        System.out.println("fetchContent2");
         URL u = new URL(url);
-        System.out.println("fetchContent3");
         URLConnection conn = u.openConnection();
-        System.out.println("fetchContent4");
         conn.setRequestProperty("User-agent", "Chrome/107.0.5304.107");
-        // 獲取回應的 Content-Type 頭
-        String contentType = conn.getHeaderField("Content-Type");
-        System.out.println("Content-Type: " + contentType);
 
-        // 從 Content-Type 中提取 charset，如果不存在，默認為 UTF-8
-        String charset = "UTF-8"; // 默認設置為 UTF-8
+        // 獲取 Content-Type 頭並提取 charset
+        String contentType = conn.getHeaderField("Content-Type");
+        String charset = "UTF-8";  // 默認設置為 UTF-8
+
         if (contentType != null && contentType.contains("charset=")) {
             charset = contentType.split("charset=")[1];
             System.out.println("Charset found in Content-Type: " + charset);
         }
 
+        // 使用從 Content-Type 中提取的 charset 進行解碼
         InputStream in = conn.getInputStream();
-
-        // 使用從 Content-Type 取得的 charset 設置編碼
         try (BufferedReader bufReader = new BufferedReader(new InputStreamReader(in, charset))) {
             String line;
             while ((line = bufReader.readLine()) != null) {
@@ -85,30 +81,19 @@ public class GoogleQuery {
         return retVal.toString();
     }
 
-    //得到搜尋結果的標題與連結
+    // 獲取搜尋結果的標題與連結
     public HashMap<String, String> query() throws IOException {
-        // 每次查詢前都需要獲取新的内容
-        //測試用step4
-        System.out.println("query1");
         String content = fetchContent();
-
-        System.out.println("query2");
         HashMap<String, String> retVal = new HashMap<>();
-        System.out.println(retVal);
-
-        System.out.println("query3");
         Document doc = Jsoup.parse(content);
 
-        System.out.println("query4");
-
-        // Google 的搜索结果結構可能會發生變化
-        Elements searchResults = doc.select("a:has(h3)"); // 選擇包含 <h3> 的連結
+        // Google 搜索結果結構可能會發生變化
+        Elements searchResults = doc.select("a:has(h3)");
 
         for (Element result : searchResults) {
             try {
-                String title = result.select("h3").text(); // 獲取標題
-                String citeUrl = result.attr("href");      // 獲取連結
-
+                String title = result.select("h3").text();
+                String citeUrl = result.attr("href");
                 if (!title.isEmpty() && citeUrl.startsWith("/url?q=")) {
                     citeUrl = citeUrl.substring(7).split("&")[0]; // 去除多餘參數
                     retVal.put(title, citeUrl);
@@ -121,20 +106,9 @@ public class GoogleQuery {
         return retVal;
     }
 
-    //取得搜尋結果Url的List
     public List<String> getAllUrls() throws IOException {
-        //測試用step3
-        System.out.println("1");
-        System.out.println(this.url);
-        System.out.println("2");
         HashMap<String, String> resultMap = this.query();
-        System.out.println("end");
-        List<String> urls = new ArrayList<>(resultMap.values());// 將所有值轉為 List
-        for (String url : urls) {
-            System.out.println(url);
-        }
-        return urls;
-        
+        return new ArrayList<>(resultMap.values());
     }
 
     public ArrayList<String> googleRelatedSearch() {
@@ -143,19 +117,15 @@ public class GoogleQuery {
 
         try {
             driver.get(url);
-
-            // 等待頁面加載完成（可以改用 WebDriverWait）
             Thread.sleep(3000);
 
             // 找到「其他人也搜尋了」的關鍵字元素
             List<WebElement> keywordElements = driver.findElements(By.xpath("//span[@class='dg6jd']"));
 
-            // 提取關鍵字文字
             for (WebElement element : keywordElements) {
                 String text = element.getText();
                 relatedSearchResult.add(text);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
