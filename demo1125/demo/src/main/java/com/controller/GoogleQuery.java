@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,7 +97,9 @@ public class GoogleQuery {
                 String citeUrl = result.attr("href");
                 if (!title.isEmpty() && citeUrl.startsWith("/url?q=")) {
                     citeUrl = citeUrl.substring(7).split("&")[0]; // 去除多餘參數
-                    retVal.put(title, citeUrl);
+                    // 解碼 URL，將編碼字符轉回原始字符
+                    String decodedUrl = URLDecoder.decode(citeUrl, "UTF-8");
+                    retVal.put(title, decodedUrl);// 將解碼後的 URL 放入結果中
                 }
             } catch (Exception e) {
                 e.printStackTrace();

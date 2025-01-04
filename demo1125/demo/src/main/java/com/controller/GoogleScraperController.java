@@ -37,7 +37,7 @@ public class GoogleScraperController {
     public Map<String, String> searchGoogle(@RequestParam String query) {
         try {
             // 對查詢關鍵字 URL 編碼
-            String combinedQuery = query + " news";
+            String combinedQuery = query + " disaster news";
             String encodedQuery = URLEncoder.encode(combinedQuery, StandardCharsets.UTF_8.toString());
 
             // 調用 service 層的 scrape 方法
@@ -60,7 +60,7 @@ public class GoogleScraperController {
     @GetMapping("/related-searches")
     public ResponseEntity<?> getRelatedSearches(@RequestParam String query) {
         try {
-            String combinedQuery = query + " news";
+            String combinedQuery = query + " disaster news";
             String encodedQuery = URLEncoder.encode(combinedQuery, StandardCharsets.UTF_8.toString());
 
             ArrayList<String> relatedSearches = googleScraperService.scrapeGoogleResultsInterest(encodedQuery);
