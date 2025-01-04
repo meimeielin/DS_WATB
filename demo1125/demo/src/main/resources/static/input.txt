@@ -1,13 +1,12 @@
-30
+31
 earthquake 1
 typhoon 1
+storm 1
 hurricane 1
 cyclone 1
 mudslide 1
 flood 1
 rainstorm 1
-Taiwan 1
-Japan 1
 windstorm 1
 disaster 1
 hail 1
@@ -23,6 +22,8 @@ casualties 0.5
 precautions 0.5
 climate 0.5
 forecast 0.5
+Taiwan 0.3
+Japan 0.3
 region 0.3
 impact 0.3
 government 0.3

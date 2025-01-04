@@ -102,10 +102,48 @@ public class GoogleScraperService {
             }
 
             // 输出 urlScores Map
-            System.out.println("\n" + "Final URL Scores:");
+            System.out.println("\n" + "URL Content Scores:");
             for (Map.Entry<String, Double> entry : urlScores.entrySet()) {
                 System.out.println(entry.getKey() + " -> " + entry.getValue());
             }
+
+
+        // 获取从文件加载的关键字，并为每个网站名称计算匹配分数
+        File file = new File(getClass().getClassLoader().getResource("static/input.txt").getFile());
+        Scanner scanner = new Scanner(file);
+        int numOfKeywords = scanner.nextInt();
+        ArrayList<Keyword> keywords = new ArrayList<>();
+        for (int j = 0; j < numOfKeywords; j++) {
+            String name = scanner.next();
+            double weight = scanner.nextDouble();
+            Keyword k = new Keyword(name, weight);
+            keywords.add(k);
+        }
+        scanner.close();
+
+        // 对每个 URL 计算基于关键字匹配的额外分数
+        for (Map.Entry<String, String> entry : queryResults.entrySet()) {
+            String siteName = entry.getKey().toUpperCase();
+            double keywordScore = 0.0;
+            // 对每个网站名称进行关键字匹配，计算额外的得分
+            for (Keyword keyword : keywords) {
+                if (siteName.contains(keyword.getName().toUpperCase())) {  // 检查网站名称是否包含关键字
+                    keywordScore += keyword.getWeight() * 10000;  // 累加关键字权重
+                }
+            }
+
+            // 将关键字匹配分数与 WebTree 分数相加
+            String url = entry.getValue();
+            double currentScore = urlScores.getOrDefault(url, 0.0);
+            urlScores.put(url, currentScore + keywordScore);  // 更新总得分
+        }
+
+        // 输出 urlScores Map
+        System.out.println("\n" + "Final URL Scores (SiteNameScore + ContentScore):");
+        for (Map.Entry<String, Double> entry : urlScores.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+
             // 排序逻辑
         List<Map.Entry<String, String>> sortedQueryResults = new ArrayList<>(queryResults.entrySet());
 

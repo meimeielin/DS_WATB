@@ -15,6 +15,14 @@ public class Keyword{
 		return "[" + name + "," + weight + "]";
 	}
 
+	public String getName(){
+		return name;
+	}
+
+	public Double getWeight(){
+		return weight;
+	}
+
 	@Override
 		public boolean equals(Object obj) {
 			if (this == obj) return true;
