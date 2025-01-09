@@ -1,7 +1,9 @@
 package com.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.controller.GoogleQuery;
 import com.controller.Keyword;
-import com.controller.Main;
 import com.controller.WebPage;
 import com.controller.WebTree;
 
@@ -50,8 +51,11 @@ public class GoogleScraperService {
                 tree.crawl(depth);
 
                 // 关键字和权重
-                File file = new File(getClass().getClassLoader().getResource("static/input.txt").getFile());
-                Scanner scanner = new Scanner(file);
+                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/input.txt");
+                if (inputStream == null) {
+                    throw new FileNotFoundException("Resource file 'static/input.txt' not found.");
+                }
+                Scanner scanner = new Scanner(inputStream);
 
                 int numOfKeywords = scanner.nextInt();
                 System.out.println("Number of keywords: " + numOfKeywords);

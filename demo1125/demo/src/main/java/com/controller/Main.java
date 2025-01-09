@@ -1,8 +1,8 @@
 package com.controller;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -61,8 +61,11 @@ public class Main implements CommandLineRunner {
                 tree.crawl(depth);
 
                 // 关键字和权重
-                File file = new File(getClass().getClassLoader().getResource("static/input.txt").getFile());
-                Scanner scanner = new Scanner(file);
+                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/input.txt");
+                if (inputStream == null) {
+                    throw new FileNotFoundException("Resource file 'static/input.txt' not found.");
+                }
+                Scanner scanner = new Scanner(inputStream);
 
                 int numOfKeywords = scanner.nextInt();
                 System.out.println("Number of keywords: " + numOfKeywords);
